@@ -3,8 +3,8 @@
 
 # todo add new parameters in launch
 
-import array
-import hashlib, base58
+#import array
+#import hashlib, base58
 import time
 import kshingle
 from datasketch import MinHash, MinHashLSH
