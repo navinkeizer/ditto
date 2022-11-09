@@ -1,6 +1,8 @@
 # DittoSearch July 2022
 # developed by Navin V. Keizer
 
+# todo add new parameters in launch
+
 import array
 import hashlib, base58
 import time
@@ -19,7 +21,7 @@ import progressbar
 number_of_results = 3
 minhash_threshold = 0.3
 minhash_num_perm = 128
-shingle_size = 4
+shingle_size = 6
 number_query_datapoints = 10
 widgets = [
     ' [', progressbar.Timer(), '] ',
@@ -35,7 +37,7 @@ def setup():
     wikipedia.set_lang("nl")
     # split dataset into train and test data
     # todo remove seed in future runs
-    np.random.seed(2000)
+#     np.random.seed(2000)
     np.random.shuffle(titles)
     train_titles = titles[:len(titles)-number_query_datapoints]
     query_titles = titles[len(titles)-number_query_datapoints:]
