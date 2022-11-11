@@ -3,6 +3,8 @@
 
 # todo add new parameters in launch
 
+# todo vary the number of items in the LSH
+
 #import array
 #import hashlib, base58
 import time
