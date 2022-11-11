@@ -23,7 +23,7 @@ import progressbar
 number_of_results = 3
 minhash_threshold = 0.3
 minhash_num_perm = 128
-shingle_size = 6
+shingle_size = 4
 number_query_datapoints = 10
 widgets = [
     ' [', progressbar.Timer(), '] ',
