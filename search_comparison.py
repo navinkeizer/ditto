@@ -20,11 +20,12 @@ import progressbar
 
 
 # global variables
+content_size = 100
 number_of_results = 3
 minhash_threshold = 0.3
 minhash_num_perm = 128
 shingle_size = 4
-number_query_datapoints = 10
+percent_query_datapoints = 10
 widgets = [
     ' [', progressbar.Timer(), '] ',
     progressbar.Bar(),
@@ -40,9 +41,15 @@ def setup():
     # split dataset into train and test data
     # todo remove seed in future runs
 #     np.random.seed(2000)
+
     np.random.shuffle(titles)
+    if content_size != 0:
+        titles = titles[:content_size]
+        
+    number_query_datapoints = content_size / percent_query_datapoints
     train_titles = titles[:len(titles)-number_query_datapoints]
     query_titles = titles[len(titles)-number_query_datapoints:]
+    print(len(train_titles), len(query_titles))
     return train_titles, query_titles, wd
 
 
@@ -457,6 +464,9 @@ def intersection(list_a, list_b):
 
 
 def main():
+    train, query, wd = setup()
+
+def main1():
     train, query, wd = setup()
     lsh, train_ds = train_func(train, wd)
 
