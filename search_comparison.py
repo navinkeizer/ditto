@@ -443,7 +443,7 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
         #print("Wikipedia Search : ", av_wd_recall / z3)
         print()
         #row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, av_shingle_delay / z, av_lsh_band_delay / z2, av_sig_delay / z1, av_wd_delay / z4,int(av_shingle_size / z),
-               int(av_sig_size / z1),av_lsh_band_recall / z3, av_sig_recall / z3 ,av_wd_recall / z3]
+               #int(av_sig_size / z1),av_lsh_band_recall / z3, av_sig_recall / z3 ,av_wd_recall / z3]
         #print(row)
     except:
         print("issue writing global stats")
