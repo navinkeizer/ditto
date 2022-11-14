@@ -465,6 +465,9 @@ def intersection(list_a, list_b):
 
 def main():
     train, query, wd = setup()
+    lsh, train_ds = train_func(train, wd)
+    query_test(query,wd,lsh,train_ds,shingle_size)
+    
 
 def main1():
     train, query, wd = setup()
