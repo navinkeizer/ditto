@@ -46,7 +46,7 @@ def setup():
     if content_size != 0:
         titles = titles[:content_size]
         
-    number_query_datapoints = content_size / percent_query_datapoints
+    number_query_datapoints = int(content_size / percent_query_datapoints)
     train_titles = titles[:len(titles)-number_query_datapoints]
     query_titles = titles[len(titles)-number_query_datapoints:]
     print(len(train_titles), len(query_titles))
