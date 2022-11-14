@@ -285,6 +285,11 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
     z2 = 0
     z3 = 0
     #z4 = 0
+    
+    ac = 0
+    sc = 0 
+    qi = 0
+    
 
     oo=0
     with progressbar.ProgressBar(max_value=len(query_titles),  widgets=widgets) as bar:
@@ -339,7 +344,8 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                                             closest[n] = item[0]
                                             closest_distance=distance
                         except:
-                            print("error occured")
+                            print("error occured finding actual closest")
+                            ac+=1
                             continue
 
                 t3 = time.time()
@@ -357,6 +363,8 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                     closest_distance=0.
                     closest_lsh += ['']
 
+                    #may need more sophisticated algorithm, although if we compare baseline to LSH it may be fine
+                    #mention in evaluation that this is the case
                     for item in train_data:
                         try:
                             if item[0] != 0:
@@ -370,7 +378,8 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                                         closest_lsh[n] = item[0]
                                         closest_distance=distance
                         except:
-                            print("error occurred")
+                            print("error occurred getting signature closest")
+                            sc +=1
                             continue
 
                 t5 = time.time()
@@ -421,6 +430,7 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                 #print(row)
             except:
                 print("issue with query: " + query)
+                qi +=1
 
     try:
         print()
@@ -445,6 +455,16 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
         #row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, av_shingle_delay / z, av_lsh_band_delay / z2, av_sig_delay / z1, av_wd_delay / z4,int(av_shingle_size / z),
                #int(av_sig_size / z1),av_lsh_band_recall / z3, av_sig_recall / z3 ,av_wd_recall / z3]
         #print(row)
+        print()
+        print()
+        print("_____________________________________________________")
+        print('\033[1m' + "Errors occured")
+        print("Getting real closest:", ac )
+        print("Getting signature closest: ", sc)
+        print("Total query issues:", qi)
+              
+        print()
+
     except:
         print("issue writing global stats")
 
