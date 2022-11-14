@@ -1,10 +1,6 @@
 # DittoSearch July 2022
 # developed by Navin V. Keizer
 
-# todo add new parameters in launch
-
-# todo vary the number of items in the LSH
-
 # import array
 # import hashlib, base58
 import time
@@ -34,23 +30,33 @@ widgets = [
 
 
 def setup():
-    print("Getting titles and parameter setup...")
+    print("Getting titles and parameter setup...")    
     wd = wikidata.wikidata("wiki_nl_all.zim")
     titles = wd.get_titles_large()
     wikipedia.set_lang("nl")
     # split dataset into train and test data
-    # todo remove seed in future runs
     #     np.random.seed(2000)
-
     np.random.shuffle(titles)
     return titles, wd
 
-def set_dataset(titles):
+def print_params():
+    print("############################################################")
+    print('\033[1m' + 'Running with parameters:')
+    print('\033[0m' + "Content size" + str(content_size))
+    print("Percentage query data (of all data)" + str(percent_query_datapoints))
+    print("Minhash permutations" + str(minhash_num_perm))
+    print("Minhash threshold" + str(minhash_threshold))
+    print("Shingle size" + str(shingle_size))
+    print("Number of top results for recall" + str(number_of_results))
+    print("############################################################")
 
+def set_dataset(titles):
     if content_size != 0:
         titles = titles[:content_size]
+        number_query_datapoints = int(content_size / percent_query_datapoints)
+    else:
+        number_query_datapoints = int(len(titles) / percent_query_datapoints)
 
-    number_query_datapoints = int(content_size / percent_query_datapoints)
     train_titles = titles[:len(titles) - number_query_datapoints]
     query_titles = titles[len(titles) - number_query_datapoints:]
     print(len(train_titles), len(query_titles))
@@ -502,6 +508,7 @@ def main():
     global content_size
     content_size = 200
     titles, wd = setup()
+    print_params()
     train, query = set_dataset(titles)
     lsh, train_ds = train_func(train, wd)
     query_test(query, wd, lsh, train_ds, shingle_size)
