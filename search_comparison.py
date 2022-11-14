@@ -459,7 +459,7 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
         print()
         print("_____________________________________________________")
         print('\033[1m' + "Errors occured")
-        print("Getting real closest:", ac )
+        print('\033[0m' + "Getting real closest:", ac )
         print("Getting signature closest: ", sc)
         print("Total query issues:", qi)
               
