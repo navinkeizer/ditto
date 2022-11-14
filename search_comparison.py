@@ -522,7 +522,7 @@ def main():
 
     titles, wd = setup()
 
-    runs = [100, 500, 1000, 1500, 2000, 5000, 10000, 15000, 20000, 30000, 40000, 50000]
+    runs = [100, 500, 1000, 1500, 2000, 5000, 10000, 15000, 20000, 30000, 40000, 50000, 70000, 100000]
     for run in runs:
         print("Starting run for size" + str(run) + "...")
         global content_size
