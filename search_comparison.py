@@ -30,7 +30,7 @@ widgets = [
 
 
 def setup():
-    print("Getting titles and parameter setup...")    
+    print("Getting titles and parameter setup...")
     wd = wikidata.wikidata("wiki_nl_all.zim")
     titles = wd.get_titles_large()
     wikipedia.set_lang("nl")
@@ -40,15 +40,20 @@ def setup():
     return titles, wd
 
 def print_params():
-    print("############################################################")
+    print()
+    print("____________________________________________________________")
     print('\033[1m' + 'Running with parameters:')
-    print('\033[0m' + "Content size" + str(content_size))
+    print('\033[0m' + "############################################################")
+    print("Content size" + str(content_size))
     print("Percentage query data (of all data)" + str(percent_query_datapoints))
     print("Minhash permutations" + str(minhash_num_perm))
     print("Minhash threshold" + str(minhash_threshold))
     print("Shingle size" + str(shingle_size))
     print("Number of top results for recall" + str(number_of_results))
     print("############################################################")
+    print("____________________________________________________________")
+
+    print()
 
 def set_dataset(titles):
     if content_size != 0:
@@ -504,26 +509,40 @@ def intersection(list_a, list_b):
     return [e for e in list_a if e in list_b]
 
 
-def main():
+def main1():
     global content_size
     content_size = 200
-    titles, wd = setup()
     print_params()
+    titles, wd = setup()
     train, query = set_dataset(titles)
     lsh, train_ds = train_func(train, wd)
     query_test(query, wd, lsh, train_ds, shingle_size)
 
 
-def main1():
+def main():
 
     titles, wd = setup()
-    train, query = set_dataset(titles)
-    lsh, train_ds = train_func(train, wd)
 
-    f1 = open('globalstats_NL.csv', 'a')
-    writer1 = csv.writer(f1)
-    f2 = open('alldata_NL.csv', 'a')
-    writer2 = csv.writer(f2)
+    runs = [100, 500, 1000, 1500, 2000, 5000, 10000, 15000, 20000, 30000, 40000, 50000]
+    for run in runs:
+        print("Starting run for size" + str(run) + "...")
+        global content_size
+        content_size = run
+        print_params()
+        train, query = set_dataset(titles)
+        lsh, train_ds = train_func(train, wd)
+
+        f1 = open('globalstats_NL.csv', 'a')
+        writer1 = csv.writer(f1)
+        f2 = open('alldata_NL.csv', 'a')
+        writer2 = csv.writer(f2)
+
+        query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
+        f1.close()
+        f2.close()
+
+
+
     # header0 = ["Parameters", "Delay Real","Delay LSH bands","Delay signature LSH","Delay wiki search","Size shingls",
     #        "Size jaccard", "Recall LSH", "Recall signature", "Recall wiki search"]
     # header = ["Shingle size", "Signature length","Minhash threshold", "TopN results", "Delay Real","Delay LSH bands","Delay signature LSH","Delay wiki search","Size shingls",
@@ -533,15 +552,15 @@ def main1():
     # writer1.writerow(header)
     # writer2.writerow(header2)
     #
-    query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
-
-    global number_of_results
-    number_of_results = 5
-
-    query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
-
-    f1.close()
-    f2.close()
+    # query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
+    #
+    # global number_of_results
+    # number_of_results = 5
+    #
+    # query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
+    #
+    # f1.close()
+    # f2.close()
 
 
 if __name__ == '__main__':
