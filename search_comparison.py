@@ -44,15 +44,14 @@ def print_params():
     print("____________________________________________________________")
     print('\033[1m' + 'Running with parameters:')
     print('\033[0m' + "############################################################")
-    print("Content size" + str(content_size))
-    print("Percentage query data (of all data)" + str(percent_query_datapoints))
-    print("Minhash permutations" + str(minhash_num_perm))
-    print("Minhash threshold" + str(minhash_threshold))
-    print("Shingle size" + str(shingle_size))
-    print("Number of top results for recall" + str(number_of_results))
+    print("Content size: " + str(content_size))
+    print("Percentage query data (of all data): " + str(percent_query_datapoints))
+    print("Minhash permutations: " + str(minhash_num_perm))
+    print("Minhash threshold: " + str(minhash_threshold))
+    print("Shingle size: " + str(shingle_size))
+    print("Number of top results for recall: " + str(number_of_results))
     print("############################################################")
     print("____________________________________________________________")
-
     print()
 
 def set_dataset(titles):
