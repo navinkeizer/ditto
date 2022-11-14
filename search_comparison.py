@@ -276,15 +276,15 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
     av_lsh_band_delay = 0.
     av_shingle_delay = 0.
     av_sig_delay = 0.
-    av_wd_delay = 0.
-    av_wd_recall = 0.
+    #av_wd_delay = 0.
+    #av_wd_recall = 0.
     av_sig_recall = 0.
     av_lsh_band_recall = 0.
     z = 0
     z1 = 0
     z2 = 0
     z3 = 0
-    z4 = 0
+    #z4 = 0
 
     oo=0
     with progressbar.ProgressBar(max_value=len(query_titles),  widgets=widgets) as bar:
@@ -382,30 +382,30 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                 print("Signature jaccard: ", closest_lsh)
 
 
-                t6 = time.time()
-                wsd = wikipedia.search(query.title(), results=4)[1:]
-                t7 = time.time()
-                wsd = [w.replace(' ', '_') for w in wsd]
+                #t6 = time.time()
+                #wsd = wikipedia.search(query.title(), results=4)[1:]
+                #t7 = time.time()
+                #wsd = [w.replace(' ', '_') for w in wsd]
 
-                wd_delay = t7-t6
-                av_wd_delay +=wd_delay
-                z4 +=1
+                #wd_delay = t7-t6
+                #av_wd_delay +=wd_delay
+                #z4 +=1
 
                 lsh_band_recall = len(intersection(closest, result_lsh)) / len(result_lsh)
                 av_lsh_band_recall += lsh_band_recall
                 sig_recall = len(intersection(closest, closest_lsh)) / len(closest_lsh)
                 av_sig_recall += sig_recall
-                wd_recall = len(intersection(closest, wsd)) / len(wsd)
-                av_wd_recall += wd_recall
+                #wd_recall = len(intersection(closest, wsd)) / len(wsd)
+                #av_wd_recall += wd_recall
                 z3+=1
 
-                print("Wikipedia Search : ", wsd)
+                #print("Wikipedia Search : ", wsd)
                 print("_____________________________________________________")
                 print('\033[1m' + "Delay")
                 print('\033[0m' + "Real (shingle jaccard) : ", shingle_delay , "seconds")
                 print("LSH bands : ", lsh_band_delay, "seconds")
                 print("Signature jaccard : ", sig_delay , "seconds")
-                print("Wikipedia Search : ", wd_delay, "seconds")
+                #print("Wikipedia Search : ", wd_delay, "seconds")
                 print("_____________________________________________________")
                 print('\033[1m' + "Size in memory")
                 print('\033[0m' + "Real (shingle jaccard)", int(shingle_size))
@@ -414,11 +414,11 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
                 print('\033[1m' + "Recall (vs Real)")
                 print('\033[0m' + "LSH bands : ", lsh_band_recall)
                 print("Signature jaccard : ", sig_recall)
-                print("Wikipedia Search : ", wd_recall)
+                #print("Wikipedia Search : ", wd_recall)
                 print()
-                row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, query, shingle_delay, lsh_band_delay, sig_delay,
-                       wd_delay, lsh_band_recall, sig_recall, wd_recall]
-                print(row)
+                #row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, query, shingle_delay, lsh_band_delay, sig_delay,
+                       #wd_delay, lsh_band_recall, sig_recall, wd_recall]
+                #print(row)
             except:
                 print("issue with query: " + query)
 
@@ -431,7 +431,7 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
         print('\033[0m' + "Real (shingle jaccard) : ", av_shingle_delay / z, "seconds")
         print("LSH bands : ", av_lsh_band_delay / z2, "seconds")
         print("Signature jaccard : ", av_sig_delay / z1, "seconds")
-        print("Wikipedia Search : ", av_wd_delay / z4, "seconds")
+        #print("Wikipedia Search : ", av_wd_delay / z4, "seconds")
         print("_____________________________________________________")
         print('\033[1m' + "Average size in memory")
         print('\033[0m' + "Real (shingle jaccard)", int(av_shingle_size / z))
@@ -440,11 +440,11 @@ def query_test(query_titles, wd, lsh, train_data, shinglesz):
         print('\033[1m' + "Recall (vs Real)")
         print('\033[0m' + "LSH bands : ", av_lsh_band_recall / z3)
         print("Signature jaccard : ", av_sig_recall / z3)
-        print("Wikipedia Search : ", av_wd_recall / z3)
+        #print("Wikipedia Search : ", av_wd_recall / z3)
         print()
-        row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, av_shingle_delay / z, av_lsh_band_delay / z2, av_sig_delay / z1, av_wd_delay / z4,int(av_shingle_size / z),
+        #row = [shinglesz, minhash_num_perm, minhash_threshold, number_of_results, av_shingle_delay / z, av_lsh_band_delay / z2, av_sig_delay / z1, av_wd_delay / z4,int(av_shingle_size / z),
                int(av_sig_size / z1),av_lsh_band_recall / z3, av_sig_recall / z3 ,av_wd_recall / z3]
-        print(row)
+        #print(row)
     except:
         print("issue writing global stats")
 
