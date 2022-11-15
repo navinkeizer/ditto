@@ -98,8 +98,6 @@ def train_func(train_titles, wd):
                 continue
 
     print(str(success) + " articles found out of " + str(len(train_titles)) + " items.")
-    train_data = train_data[train_data[:, 2].argsort()]
-    print(train_data)
     return lsh, train_data
 
 
@@ -565,7 +563,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main1()
+    main()
 
 # todo get results by varying: bands parameters, topN, number of datapoints in the network, LSH parameters,
 #  shingle size, signature length, vary top N for real and sig differently
