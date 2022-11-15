@@ -511,13 +511,13 @@ def intersection(list_a, list_b):
 
 
 def main1():
-    global content_size
-    content_size = 200
-    print_params()
+#     global content_size
+#     content_size = 200
+#     print_params()
     titles, wd = setup()
     train, query = set_dataset(titles)
     lsh, train_ds = train_func(train, wd)
-    query_test(query, wd, lsh, train_ds, shingle_size)
+#     query_test(query, wd, lsh, train_ds, shingle_size)
 
 
 def main():
@@ -565,7 +565,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main1()
 
 # todo get results by varying: bands parameters, topN, number of datapoints in the network, LSH parameters,
 #  shingle size, signature length, vary top N for real and sig differently
