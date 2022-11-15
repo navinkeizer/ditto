@@ -98,6 +98,8 @@ def train_func(train_titles, wd):
                 continue
 
     print(str(success) + " articles found out of " + str(len(train_titles)) + " items.")
+    train_data = train_data[train_data[:, 2].argsort()]
+    print(train_data)
     return lsh, train_data
 
 
