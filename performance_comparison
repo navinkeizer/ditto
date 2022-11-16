@@ -53,11 +53,16 @@ def save_ipfs_cids():
 
 
 def generate_sig(t, wd):
-    txt_file = wd.get_content_txt(t)
-    shingles = kshingle.shingleset_k(txt_file, k=4)
-    m = MinHash(num_perm=64)
-    for d in shingles:
-        m.update(d.encode('utf8'))
+    try:
+        txt_file = wd.get_content_txt(t)
+        shingles = kshingle.shingleset_k(txt_file, k=4)
+        m = MinHash(num_perm=64)
+        for d in shingles:
+            m.update(d.encode('utf8'))
+    except:
+        print("Issue getting", t, "...")
+        m=''
+        shingles = ''
     return m, shingles
 
 
@@ -161,7 +166,7 @@ def compare_accuracy(percentage,w):
     subset2 = titles[:int(len(titles) * (percentage/100))]
     av_dif=0.
     n=0
-    
+
     oo = 0
     with progressbar.ProgressBar(max_value=len(subset), widgets=widgets) as bar:
         for s in subset:
@@ -171,13 +176,14 @@ def compare_accuracy(percentage,w):
                 if s != a:
                     m1, s1 = generate_sig(s, wd)
                     m2, s2 = generate_sig(a, wd)
-                    estimate = m1.jaccard(m2)
-                    real = float(len(s1.intersection(s2)))/float(len(s1.union(s2)))
-                    dif = get_change(real,estimate)
-                    av_dif = av_dif + dif
-                    n=n+1
-                    row = [percentage, dif]
-                    w.writerow(row)
+                    if m1 != '' and m2 != '':
+                        estimate = m1.jaccard(m2)
+                        real = float(len(s1.intersection(s2)))/float(len(s1.union(s2)))
+                        dif = get_change(real,estimate)
+                        av_dif = av_dif + dif
+                        n=n+1
+                        row = [percentage, dif]
+                        w.writerow(row)
 
     return av_dif/n
 
@@ -232,7 +238,7 @@ def compare_metrics(signatures, w1 ,w2, dataset):
 
 def main():
 
-    content_number = 100
+    content_number = 100000
     print("Getting wikipedia signatures...")
 
     f0 = open('delay_signatures.csv', 'a')
