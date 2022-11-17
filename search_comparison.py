@@ -520,13 +520,15 @@ def main1():
 
 def main():
 
+    global minhash_num_perm
     titles, wd = setup()
     minhash_num_perm = 64
+    global content_size
 
     runs = [100, 500, 1000, 1500, 2000, 5000, 10000]
     for run in runs:
         print("Starting run for size " + str(run) + "...")
-        global content_size
+        
         content_size = run
         print_params()
         train, query = set_dataset(titles)
@@ -547,7 +549,6 @@ def main():
     runs = [100, 500, 1000, 1500, 2000, 5000, 10000]
     for run in runs:
         print("Starting run for size " + str(run) + "...")
-        global content_size
         content_size = run
         print_params()
         train, query = set_dataset(titles)
