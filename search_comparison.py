@@ -521,8 +521,30 @@ def main1():
 def main():
 
     titles, wd = setup()
+    minhash_num_perm = 64
 
-    runs = [100, 500, 1000, 1500, 2000, 5000, 10000, 15000, 20000, 30000, 40000, 50000, 70000, 100000]
+    runs = [100, 500, 1000, 1500, 2000, 5000, 10000]
+    for run in runs:
+        print("Starting run for size " + str(run) + "...")
+        global content_size
+        content_size = run
+        print_params()
+        train, query = set_dataset(titles)
+        lsh, train_ds = train_func(train, wd)
+
+        f1 = open('globalstats_NL.csv', 'a')
+        writer1 = csv.writer(f1)
+        f2 = open('alldata_NL.csv', 'a')
+        writer2 = csv.writer(f2)
+
+        query_func(query, wd, lsh, train_ds, writer1, writer2, shingle_size)
+        f1.close()
+        f2.close()
+    
+    
+    minhash_num_perm = 32
+
+    runs = [100, 500, 1000, 1500, 2000, 5000, 10000]
     for run in runs:
         print("Starting run for size " + str(run) + "...")
         global content_size
