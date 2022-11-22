@@ -1,8 +1,4 @@
 
-# todo: 1. implement the jaccard and accuracy comparisons from earlier runs on larger
-#  dataset containing 1) ipfs crawled data and 2) wikipedia data
-
-# todo: 2. implement modified kademlia with minhash in id space
 
 import wikidata
 import numpy as np
