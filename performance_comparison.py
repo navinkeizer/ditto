@@ -11,7 +11,6 @@ import kshingle
 from datasketch import MinHash
 import re, csv, time, os
 import pandas as pd
-import ipfshttpclient
 from scipy.spatial import distance
 import subprocess
 from threading import Timer
@@ -160,18 +159,22 @@ def get_ipfs_signatures(number):
                 continue
 
 
-def compare_accuracy(number,w, kshingle, num_perm):
+def setup_titles(number):
     wd = wikidata.wikidata("wiki_nl_all.zim")
     titles = wd.get_titles_large()
     np.random.shuffle(titles)
     subset = titles[:number]
     np.random.shuffle(titles)
     subset2 = titles[:number]
+    return wd, subset, subset2
+
+
+def compare_accuracy(wd, writer, kshingle, num_perm, subset, subset2):
     av_dif=0.
     n=0
 
     oo = 0
-    with progressbar.ProgressBar(max_value=int(number*number), widgets=widgets) as bar:
+    with progressbar.ProgressBar(max_value=int(len(subset)*len(subset2)), widgets=widgets) as bar:
         for s in subset:
             for a in subset2:
                 bar.update(oo)
@@ -189,8 +192,8 @@ def compare_accuracy(number,w, kshingle, num_perm):
                         delay = (d1+d2)/2
                         n=n+1
                         # row = [number, kshingle, num_perm, dif, delay, difxor]
-                        row = [number, kshingle, num_perm, dif, delay]
-                        w.writerow(row)
+                        row = [len(subset), kshingle, num_perm, dif, delay]
+                        writer.writerow(row)
 
     return av_dif/n
 
@@ -272,9 +275,9 @@ def main():
     # print()
     # print("Comparing signature distance metrics ipfs...")
 
-    # todo run with nump = 4, 8, 256
 
     nmr = 50
+    wd, s1, s2 = setup_titles(nmr)
     
     k = 6
     nump = [4,8,16,32,64,128,256]
@@ -284,12 +287,11 @@ def main():
         print(" Kshingle", str(k), "\n", "num_perm", str(np), "\n", "number of runs", str(nmr))
         f3 = open('accuracy_comparison3.csv', 'a')
         writer3 = csv.writer(f3)
-        av_dif = compare_accuracy(nmr, writer3, k, np)
+        av_dif = compare_accuracy(wd, writer3, k, np, s1, s2)
 
         print("Average difference signature vs raw (for wikidata): ", av_dif)
         f3.close()
-        
-        
+
     np = 128
     kss =[2, 4, 6, 8, 10, 12]
     for k in kss:
@@ -298,12 +300,12 @@ def main():
         print(" Kshingle", str(k), "\n", "num_perm", str(np), "\n", "number of runs", str(nmr))
         f3 = open('accuracy_comparison3.csv', 'a')
         writer3 = csv.writer(f3)
-        av_dif = compare_accuracy(nmr, writer3, k, np)
+        av_dif = compare_accuracy(wd, writer3, k, np, s1, s2)
 
         print("Average difference signature vs raw (for wikidata): ", av_dif)
         f3.close()
-    
-        
+
+
 
 
 
@@ -321,17 +323,17 @@ def main():
     # f3.close()
 
 
-    # 
+    #
     # k=4
     # np = 4
-    # 
+    #
     # print()
     # print("Checking jaccard accuracy vs raw data...")
     # print(" Kshingle", str(k), "\n", "num_perm", str(np),"\n","number of runs", str(nmr))
     # f3 = open('accuracy_comparison2.csv', 'a')
     # writer3 = csv.writer(f3)
     # av_dif = compare_accuracy(nmr, writer3, k, np)
-    # 
+    #
     # print("Average difference signature vs raw (for wikidata): ",av_dif)
     # f3.close()
 
